@@ -10,9 +10,9 @@ import math
 
 #start = 9000
 #starte = 2200
-start = int(sys.argv[2])
-starte = int(sys.argv[3])
-locator = int(sys.argv[4])
+#start = int(sys.argv[2])
+#starte = int(sys.argv[3])
+#locator = int(sys.argv[4])
 #locator = 0.0002 
 #locatore = 0.00008 
 
@@ -23,6 +23,9 @@ mag1 = []
 mag2 = []
 mag3 = []
 mag4 = []
+mag5x = []
+mag5y = []
+mag5z = []
 mag5 = []
 acc1 = []
 acc2 = []
@@ -31,10 +34,10 @@ gyro1 = []
 gyro2 = []
 gyro3 = []
 
-print "file name" + str(sys.argv[1])
+#print "file name" + str(sys.argv[1])
 short_name = sys.argv[1]
-print "start " + str(start)
-print "starte" + str(starte) 
+#print "start " + str(start)
+#print "starte" + str(starte) 
 
 file = open(sys.argv[1], 'r') 
 bob1 = 0
@@ -63,7 +66,6 @@ for line in file:
             else:
                 mag = line[2].split("u")
                 magx = mag[0]
-#                magx = 0.01 * float(mag[0]) + 0.99 * float(magx) 
             mag1.append([time1, magx ])
             if (bob1 == 0):
                 mag = line[3].split("u")
@@ -71,7 +73,6 @@ for line in file:
             else:
                 mag = line[3].split("u")
                 magy = mag[0]
-#                magy = 0.01 * float(mag[0]) + 0.99 * float(magy) 
             mag2.append([time1, magy ])
             if (bob1 == 0):
                 mag = line[4].split("u")
@@ -79,9 +80,8 @@ for line in file:
             else:
                 mag = line[4].split("u")
                 magz = mag[0]
-#                magz = 0.01 * float(mag[0]) + 0.99 * float(magz) 
             mag3.append([time1, magz])
-#            mag4.append([time1, math.sqrt(float(magz)**2 + float(magy)**2 + float(magx)**2)])
+            mag4.append([time1, math.sqrt(float(magz)**2 + float(magy)**2 + float(magx)**2)])
             bob1 = bob1 + 1
 
         if(line[1]=="ACC"):
@@ -148,172 +148,91 @@ magz4 = filtfilt(b, a, magz3)
 magt4 = filtfilt(b, a, magt3)
 
 for idx, val in enumerate(magx):
+    mag5x.append([time1[idx], magx4[idx]])
+    mag5y.append([time1[idx], magy4[idx]])
+    mag5z.append([time1[idx], magz4[idx]])
     mag5.append([time1[idx], magt4[idx]])
 
 time4, magt = zip(*mag4)
 
-#fig, ax = plt.subplots()
-#axes = [ax, ax.twinx(), ax.twinx()]
-#fig.subplots_adjust(right=0.75)
-#axes[-1].spines['right'].set_position(('axes', 1.2))
-#
-#axes[0].plot_date(time1[start:], magz4[start:],'g-')
-#axes[0].set_xlabel('time (hours:minutes:seconds)')
-#axes[0].set_ylabel('Magnetic Flux X Axis (uT)', color='g')
-#axes[0].tick_params('y', colors='g')
-#
-#axes[1].plot_date(time2[start:], magy4[start:],'b-')
-#axes[1].set_ylabel('Magnetic Flux Y Axis (uT)', color='b')
-#axes[1].tick_params('y', colors='b')
-#
-#axes[2].plot_date(time3[start:], magx4[start:],'r-')
-#axes[2].set_ylabel('Magnetic Flux Z Axis (uT)', color='r')
-#axes[2].tick_params('y', colors='r')
-#
-#fig.autofmt_xdate()
-#xfmt = mdates.DateFormatter('%H:%M:%S')
-#axes[-1].xaxis.set_major_formatter(xfmt)
-#axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
-##plt.show()
-
-fig, ax = plt.subplots()
-ax.plot_date(time1[start:], magt4[start:],'g-')
-ax.set_xlabel('time (hour:minutes:seconds)')
-ax.set_ylabel('Magnetic Flux Magnitude (uT)', color='g')
-fig.autofmt_xdate()
-xfmt = mdates.DateFormatter('%H:%M:%S')
-ax.xaxis.set_major_formatter(xfmt)
-ax.xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
-#plt.show()
-
-print "start"
-mag4_name = short_name + "_magt.csv"
-print mag4_name
-print len(mag5)
-print type(mag5)
-print type(mag5[0])
-print type(mag5[0][0])
-print type(mag5[0][1])
-print mag5[0][0]
-print mag5[0][1]
-with open(mag4_name,'w') as f:
+mag5x_name = short_name + "_Xmagt.csv"
+mag5y_name = short_name + "_Ymagt.csv"
+mag5z_name = short_name + "_Zmagt.csv"
+mag5_name = short_name + "_magt.csv"
+for idx, val in enumerate(magx):
+    mag5x.append([time1[idx], magx4[idx]])
+    mag5y.append([time1[idx], magy4[idx]])
+    mag5z.append([time1[idx], magz4[idx]])
+with open(mag5x_name,'w') as f:
+    f.writelines(["%s\n" % item for item in mag5x])
+    f.close()
+with open(mag5y_name,'w') as f:
+    f.writelines(["%s\n" % item for item in mag5y])
+    f.close()
+with open(mag5z_name,'w') as f:
+    f.writelines(["%s\n" % item for item in mag5z])
+    f.close()
+with open(mag5_name,'w') as f:
     f.writelines(["%s\n" % item for item in mag5])
     f.close()
-print "end"
+ 
 
-#time10, gyr1 = zip(*gyro1)
-#time11, gyr2 = zip(*gyro2)
-#time12, gyr3 = zip(*gyro3)
-#
-#fig, ax = plt.subplots()
-#axes = [ax, ax.twinx(), ax.twinx()]
-#fig.subplots_adjust(right=0.75)
-#axes[-1].spines['right'].set_position(('axes', 1.2))
-#
-#axes[0].plot_date(time11[start:], gyr1[start:],'g-')
-#axes[0].set_xlabel('time (hour:minutes:seconds)')
-#axes[0].set_ylabel('Rotation - X Axis (degrees)', color='g')
-#axes[0].tick_params('y', colors='g')
-#
-#axes[1].plot_date(time11[start:], gyr2[start:],'b-')
-#axes[1].set_ylabel('Rotation - Y Axis (degrees)', color='b')
-#axes[1].tick_params('y', colors='b')
-#
-#axes[2].plot_date(time12[start:], gyr3[start:],'r-')
-#axes[2].set_ylabel('Rotation - Z Axis (degrees)', color='r')
-#axes[2].tick_params('y', colors='r')
-#
-#fig.autofmt_xdate()
-#xfmt = mdates.DateFormatter('%H:%M:%S')
-#axes[-1].xaxis.set_major_formatter(xfmt)
-#axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
-##plt.show()
-#
-#gyro1_name = short_name + "gyro1.csv"
-#print gyro1_name
-#print len(gyro1)
-#print type(gyro1)
-#print type(gyro1[0])
-#print type(gyro1[0][0])
-#print type(gyro1[0][1])
-#with open(gyro1_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in gyro1])
-#    f.close()
-#
-#gyro2_name = short_name + "gyro2.csv"
-#with open(gyro2_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in gyro2])
-#    f.close()
-#
-#gyro3_name = short_name + "gyro3.csv"
-#with open(gyro3_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in gyro3])
-#    f.close()
-#
-#
-time20, ac1 = zip(*acc1)
-time21, ac2 = zip(*acc2)
-time22, ac3 = zip(*acc3)
+print "printing acc with length"
+print len(acc1)
+#time20, ac1 = zip(*acc1)
+#time21, ac2 = zip(*acc2)
+#time22, ac3 = zip(*acc3)
 
-#fig, ax = plt.subplots()
+accx_name = short_name + "_accx.csv"
+with open(accx_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in acc1])
+    f.close()
 
-ax.plot_date(time20[start:], ac1[start:],'g-', label="Z Axis")
-ax.plot_date(time21[start:], ac2[start:],'b-', label="Y Axis")
-ax.plot_date(time22[start:], ac3[start:],'r-', label="X Axis")
-ax.set_xlabel('time (hour:minutes:seconds)')
-ax.set_ylabel('Acceleration (g)', color='g') 
+accy_name = short_name + "_accy.csv"
+with open(accy_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in acc2])
+    f.close()
 
-legend = ax.legend(loc='upper left', shadow=True)
-frame = legend.get_frame()
-frame.set_facecolor('0.90')
+accz_name = short_name + "_accz.csv"
+with open(accz_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in acc3])
+    f.close()
 
-fig.autofmt_xdate()
-xfmt = mdates.DateFormatter('%H:%M:%S')
-ax.xaxis.set_major_formatter(xfmt)
-ax.xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
-#plt.show()
+time10, gyr1 = zip(*gyro1)
+time11, gyr2 = zip(*gyro2)
+time12, gyr3 = zip(*gyro3)
 
+gyro1_name = short_name + "gyro1.csv"
+gyro2_name = short_name + "gyro2.csv"
+gyro3_name = short_name + "gyro3.csv"
 
-#time4, temper = zip(*temperature)
-#time5, humid = zip(*humidity)
-#time6, press = zip(*pressure)
-#
-#fig, ax = plt.subplots()
-#axes = [ax, ax.twinx(), ax.twinx()]
-#fig.subplots_adjust(right=0.75)
-#axes[-1].spines['right'].set_position(('axes', 1.2))
-#
-#axes[0].plot_date(time4[starte:], temper[starte:],'g-')
-#axes[0].set_xlabel('time (hour:minute:seconds)')
-#axes[0].set_ylabel('Temperature', color='g')
-#axes[0].tick_params('y', colors='g')
-#
-#axes[1].plot_date(time5[starte:], humid[starte:],'b-')
-#axes[1].set_ylabel('Humidity', color='b')
-#axes[1].tick_params('y', colors='b')
-#
-#axes[2].plot_date(time6[starte:], press[starte:],'r-')
-#axes[2].set_ylabel('Pressure (kPa)', color='r')
-#axes[2].tick_params('y', colors='r')
-#
-#fig.autofmt_xdate()
-#xfmt = mdates.DateFormatter('%H:%M:%S')
-#axes[-1].xaxis.set_major_formatter(xfmt)
-#axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
-##plt.show()
-#
-#
-#temp_name = short_name + "temp.csv"
-#with open(temp_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in temperature])
-#    f.close()
-#
-#humid_name = short_name + "humid.csv"
-#with open(humid_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in humidity])
-#    f.close()
-#
-#press_name = short_name + "press.csv"
-#with open(press_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in pressure])
-#    f.close()
+with open(gyro1_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in gyro1])
+    f.close()
+
+with open(gyro2_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in gyro2])
+    f.close()
+
+with open(gyro3_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in gyro3])
+    f.close()
+
+time4, temper = zip(*temperature)
+time5, humid = zip(*humidity)
+time6, press = zip(*pressure)
+
+temp_name = short_name + "_temp.csv"
+with open(temp_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in temperature])
+    f.close()
+
+humid_name = short_name + "_humid.csv"
+with open(humid_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in humidity])
+    f.close()
+
+press_name = short_name + "_press.csv"
+with open(press_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in pressure])
+    f.close()

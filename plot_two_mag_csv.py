@@ -7,7 +7,7 @@ import datetime
 import sys
 import math
 
-locator = 120 
+locator = 10 
 mag4a = []
 mag4b = []
 mag4c = []
@@ -43,8 +43,8 @@ timeb, valueb = zip(*mag4b)
 
 fig, ax = plt.subplots()
 
-ax.plot_date(timea, valuea,'g-', label="Middle Sensor (uT)")
-ax.plot_date(timeb, valueb,'b-', label="Far (from chill) Sensor (uT)")
+ax.plot_date(timea, valuea,'g-', label="First Sensor (uT)")
+ax.plot_date(timeb, valueb,'b-', label="Second Sensor (uT)")
 #ax.plot_date(timed, valued,'m-', label="Sensor 5")
 #ax.plot_date(timee, valuee,'y-', label="Sensor 6")
 ax.set_xlabel('time (hour:minutes:seconds)')
@@ -63,18 +63,18 @@ plt.show()
 
 
 fig, ax = plt.subplots()
-axes = [ax, ax.twinx(), ax.twinx(), ax.twinx(), ax.twinx()]
+axes = [ax, ax.twinx() ]
 fig.subplots_adjust(right=0.75)
 
 axes[0].plot_date(timea, valuea,'g-')
 axes[0].set_xlabel('time (minutes:seconds)')
-axes[0].set_ylabel('Middle Magnetometer Magnitude (uT)', color='g')
+axes[0].set_ylabel('First Sensor (uT)', color='g')
 axes[0].tick_params('y', colors='g')
 t1, t2 = axes[0].get_xlim()
 #axes[0].set_xlim(736598.589500, 736598.591681)
 
 axes[1].plot_date(timeb, valueb,'b-')
-axes[1].set_ylabel('Far (from chill) Magnetometer Magnitude (uT)', color='b')
+axes[1].set_ylabel('Second Sensor (uT)', color='b')
 axes[1].tick_params('y', colors='b')
 
 #axes[3].plot_date(timed, valued,'m-')
@@ -88,6 +88,6 @@ axes[1].tick_params('y', colors='b')
 fig.autofmt_xdate()
 xfmt = mdates.DateFormatter('%M:%S')
 axes[-1].xaxis.set_major_formatter(xfmt)
-axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=10))
+axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
 plt.show()
 
