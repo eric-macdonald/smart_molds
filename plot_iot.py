@@ -8,13 +8,9 @@ import datetime
 import sys
 import math
 
-#start = 9000
-#starte = 2200
 start = int(sys.argv[2])
 starte = int(sys.argv[3])
 locator = int(sys.argv[4])
-#locator = 0.0002 
-#locatore = 0.00008 
 
 temperature = []
 humidity = []
@@ -180,16 +176,7 @@ ax.xaxis.set_major_formatter(xfmt)
 ax.xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
 plt.show()
 
-print "start"
-mag4_name = short_name + "_magt.csv"
-print mag4_name
-print len(mag4)
-print type(mag4)
-print type(mag4[0])
-print type(mag4[0][0])
-print type(mag4[0][1])
-print mag4[0][0]
-print mag4[0][1]
+mag4_name = short_name + "magT.csv"
 with open(mag4_name,'w') as f:
     f.writelines(["%s\n" % item for item in magt4])
     f.close()
@@ -223,28 +210,23 @@ axes[-1].xaxis.set_major_formatter(xfmt)
 axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
 plt.show()
 
-#gyro1_name = short_name + "gyro1.csv"
-#print gyro1_name
-#print len(gyro1)
-#print type(gyro1)
-#print type(gyro1[0])
-#print type(gyro1[0][0])
-#print type(gyro1[0][1])
-#with open(gyro1_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in gyro1])
-#    f.close()
-#
-#gyro2_name = short_name + "gyro2.csv"
-#with open(gyro2_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in gyro2])
-##    f.close()
-#
-#gyro3_name = short_name + "gyro3.csv"
-#with open(gyro3_name,'w') as f:
-#    f.writelines(["%s\n" % item  for item in gyro3])
-#    f.close()
-#
-#
+gyro1_name = short_name + "gyro1.csv"
+
+with open(gyro1_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in gyro1])
+    f.close()
+
+gyro2_name = short_name + "gyro2.csv"
+with open(gyro2_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in gyro2])
+    f.close()
+
+gyro3_name = short_name + "gyro3.csv"
+with open(gyro3_name,'w') as f:
+    f.writelines(["%s\n" % item  for item in gyro3])
+    f.close()
+
+
 time20, ac1 = zip(*acc1)
 time21, ac2 = zip(*acc2)
 time22, ac3 = zip(*acc3)
@@ -272,21 +254,37 @@ time4, temper = zip(*temperature)
 time5, humid = zip(*humidity)
 time6, press = zip(*pressure)
 
+b, a = butter(3, 0.05)
+temper = list(temper)
+temper2 = [float(i) for i in temper]
+temper3=np.asarray(temper2, dtype=float)
+humid = list(humid)
+humid2 = [float(i) for i in humid]
+humid3=np.asarray(humid2, dtype=float)
+press = list(press)
+press2 = [float(i) for i in press]
+press3=np.asarray(press2, dtype=float)
+
+
+temper4 = filtfilt(b, a, temper3)
+humid4 = filtfilt(b, a, humid3)
+press4 = filtfilt(b, a, press3)
+
 fig, ax = plt.subplots()
 axes = [ax, ax.twinx(), ax.twinx()]
 fig.subplots_adjust(right=0.75)
 axes[-1].spines['right'].set_position(('axes', 1.2))
 
-axes[0].plot_date(time4[starte:], temper[starte:],'g-')
+axes[0].plot_date(time4[starte:], temper4[starte:],'g-')
 axes[0].set_xlabel('time (hour:minute:seconds)')
 axes[0].set_ylabel('Temperature', color='g')
 axes[0].tick_params('y', colors='g')
 
-axes[1].plot_date(time5[starte:], humid[starte:],'b-')
+axes[1].plot_date(time5[starte:], humid4[starte:],'b-')
 axes[1].set_ylabel('Humidity', color='b')
 axes[1].tick_params('y', colors='b')
 
-axes[2].plot_date(time6[starte:], press[starte:],'r-')
+axes[2].plot_date(time6[starte:], press4[starte:],'r-')
 axes[2].set_ylabel('Pressure (kPa)', color='r')
 axes[2].tick_params('y', colors='r')
 
