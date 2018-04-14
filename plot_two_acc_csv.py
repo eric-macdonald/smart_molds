@@ -7,7 +7,8 @@ import datetime
 import sys
 import math
 
-locator = 10 
+locator = int(sys.argv[3])
+delay = sys.argv[4]
 mag4a = []
 mag4b = []
 mag4c = []
@@ -34,6 +35,7 @@ file = open(sys.argv[2], 'r')
 for line in file:
     line = line.split(',')
     timeb = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
+    timeb = timeb - datetime.timedelta(seconds=int(delay))
     valueb = line[1].rstrip()
     valueb = float(valueb)
     mag4b.append([timeb,  valueb])

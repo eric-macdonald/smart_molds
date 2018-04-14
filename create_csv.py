@@ -159,10 +159,10 @@ mag5x_name = short_name + "_Xmagt.csv"
 mag5y_name = short_name + "_Ymagt.csv"
 mag5z_name = short_name + "_Zmagt.csv"
 mag5_name = short_name + "_magt.csv"
-for idx, val in enumerate(magx):
-    mag5x.append([time1[idx], magx4[idx]])
-    mag5y.append([time1[idx], magy4[idx]])
-    mag5z.append([time1[idx], magz4[idx]])
+#for idx, val in enumerate(magx):
+#    mag5x.append([time1[idx], magx4[idx]])
+#    mag5y.append([time1[idx], magy4[idx]])
+#    mag5z.append([time1[idx], magz4[idx]])
 with open(mag5x_name,'w') as f:
     f.writelines(["%s\n" % item for item in mag5x])
     f.close()

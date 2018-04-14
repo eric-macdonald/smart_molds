@@ -7,7 +7,8 @@ import datetime
 import sys
 import math
 
-locator = 10 
+locator = sys.argv[3]
+delay = sys.argv[4]
 mag4a = []
 mag4b = []
 mag4c = []
@@ -34,6 +35,7 @@ file = open(sys.argv[2], 'r')
 for line in file:
     line = line.split(',')
     timeb = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
+    timeb = timeb - datetime.timedelta(seconds=int(delay))
     valueb = line[1].rstrip()
     valueb = float(valueb)
     mag4b.append([timeb,  valueb])
@@ -57,7 +59,7 @@ frame.set_facecolor('0.90')
 fig.autofmt_xdate()
 xfmt = mdates.DateFormatter('%H:%M:%S')
 ax.xaxis.set_major_formatter(xfmt)
-ax.xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
+ax.xaxis.set_major_locator(mdates.SecondLocator(interval=int(locator)))
 plt.show()
 
 
@@ -88,6 +90,6 @@ axes[1].tick_params('y', colors='b')
 fig.autofmt_xdate()
 xfmt = mdates.DateFormatter('%M:%S')
 axes[-1].xaxis.set_major_formatter(xfmt)
-axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=locator))
+axes[-1].xaxis.set_major_locator(mdates.SecondLocator(interval=int(locator)))
 plt.show()
 
