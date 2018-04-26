@@ -7,7 +7,7 @@ import datetime
 import sys
 import math
 
-locator = 10
+locator = int(sys.argv[1])
 mag4a = []
 mag4b = []
 mag4c = []
@@ -17,7 +17,7 @@ timea = datetime.datetime.now() - datetime.timedelta(100)
 timeb = datetime.datetime.now() - datetime.timedelta(100)
 timec = datetime.datetime.now() - datetime.timedelta(100)
 
-file = open(sys.argv[1], 'r') 
+file = open(sys.argv[2], 'r') 
 for line in file:
     line = line.split(',')
     oldtimea = timea
@@ -30,21 +30,21 @@ for line in file:
     valuea = float(valuea) 
     mag4a.append([timea,  valuea])
 
-file = open(sys.argv[2], 'r') 
-for line in file:
-    line = line.split(',')
-    timeb = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
-    valueb = line[1].rstrip()
-    valueb = float(valueb)
-    mag4b.append([timeb,  valueb])
-
-file = open(sys.argv[3], 'r') 
-for line in file:
-    line = line.split(',')
-    timec = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
-    valuec = line[1].rstrip()
-    valuec = float(valuec) 
-    mag4c.append([timec,  valuec])
+#file = open(sys.argv[2], 'r') 
+#for line in file:
+##    line = line.split(',')
+#    timeb = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
+#    valueb = line[1].rstrip()
+#    valueb = float(valueb)
+#    mag4b.append([timeb,  valueb])
+#
+#file = open(sys.argv[3], 'r') 
+#for line in file:
+#    line = line.split(',')
+#    timec = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
+#    valuec = line[1].rstrip()
+#    valuec = float(valuec) 
+#    mag4c.append([timec,  valuec])
 
 #file = open(sys.argv[4], 'r') 
 #for line in file:
@@ -65,7 +65,7 @@ for line in file:
 #    mag4e.append([timee,  valuee])
 #
 timea, valuea = zip(*mag4a)
-timeb, valueb = zip(*mag4b)
+#timeb, valueb = zip(*mag4b)
 #timec, valuec = zip(*mag4c)
 #timed, valued = zip(*mag4d)
 #timee, valuee = zip(*mag4e)
@@ -73,8 +73,8 @@ timeb, valueb = zip(*mag4b)
 fig, ax = plt.subplots()
 
 ax.plot_date(timea, valuea,'g-', label="Sensor 1")
-ax.plot_date(timeb, valueb,'b-', label="Sensor 2")
-ax.plot_date(timec, valuec,'r-', label="Sensor 3")
+#ax.plot_date(timeb, valueb,'b-', label="Sensor 2")
+#ax.plot_date(timec, valuec,'r-', label="Sensor 3")
 #ax.plot_date(timed, valued,'m-', label="Sensor 5")
 #ax.plot_date(timee, valuee,'y-', label="Sensor 6")
 ax.set_xlabel('time (hour:minutes:seconds)')
@@ -93,7 +93,8 @@ plt.show()
 
 
 fig, ax = plt.subplots()
-axes = [ax, ax.twinx()]
+#axes = [ax, ax.twinx()]
+axes = [ax]
 fig.subplots_adjust(right=0.75)
 
 axes[0].plot_date(timea, valuea,'g-')
@@ -103,13 +104,13 @@ axes[0].tick_params('y', colors='g')
 t1, t2 = axes[0].get_xlim()
 #axes[0].set_xlim(736598.589500, 736598.591681)
 
-axes[1].plot_date(timeb, valueb,'b-')
-axes[1].set_ylabel('Magnetic sensor 2 (uT)', color='b')
-axes[1].tick_params('y', colors='b')
-
-axes[2].plot_date(timec, valuec,'r-')
-axes[2].set_ylabel('Magnetic sensor 3 (uT)', color='r')
-axes[2].tick_params('y', colors='r')
+#axes[1].plot_date(timeb, valueb,'b-')
+#axes[1].set_ylabel('Magnetic sensor 2 (uT)', color='b')
+#axes[1].tick_params('y', colors='b')
+#
+#axes[2].plot_date(timec, valuec,'r-')
+#axes[2].set_ylabel('Magnetic sensor 3 (uT)', color='r')
+#axes[2].tick_params('y', colors='r')
 
 #axes[3].plot_date(timed, valued,'m-')
 #axes[3].set_ylabel('Magnetic sensor 4 (uT)', color='m')

@@ -28,6 +28,7 @@ for line in file:
         print timea
         print oldtimea
     valuea = line[1].rstrip()
+    valuea = valuea.replace("'", "")
     valuea = float(valuea) 
     mag4a.append([timea,  valuea])
 
@@ -37,6 +38,7 @@ for line in file:
     timeb = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
     timeb = timeb - datetime.timedelta(seconds=int(delay))
     valueb = line[1].rstrip()
+    valueb = valueb.replace("'", "")
     valueb = float(valueb)
     mag4b.append([timeb,  valueb])
 

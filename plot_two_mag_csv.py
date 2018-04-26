@@ -35,7 +35,7 @@ file = open(sys.argv[2], 'r')
 for line in file:
     line = line.split(',')
     timeb = datetime.datetime.strptime(line[0], '%Y-%m-%dT%H:%M:%S.%f')
-    timeb = timeb - datetime.timedelta(seconds=int(delay))
+    timeb = timeb - datetime.timedelta(microseconds=int(delay))
     valueb = line[1].rstrip()
     valueb = float(valueb)
     mag4b.append([timeb,  valueb])
